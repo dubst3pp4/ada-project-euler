@@ -43,39 +43,37 @@ procedure Main is
    Max_Factor         : constant Integer := 999;
    Factor_A           : Integer          := 0;
    Factor_B           : Integer          := 0;
+   Product            : Integer          := 0;
    Largest_Palindrome : Integer          := 0;
-   Found              : Boolean          := false;
 
 begin
 
    A_Loop:
    for I in reverse 100..Max_Factor loop
 
-      Factor_A := I;
-
       B_Loop:
-      for J in reverse 100..Max_Factor loop
+      for J in reverse 100..I loop
 
-         Factor_B := J;
-         Largest_Palindrome := I * J;
-         Found := Is_Palindrome( 
-            SF.Trim( Integer'Image( Largest_Palindrome ), Ada.Strings.Left) 
-         );
+         Product  := I * J;
+         if Is_Palindrome( 
+               SF.Trim( Integer'Image( Product ), Ada.Strings.Left) 
+            ) then
+            if Product > Largest_Palindrome then
+               Factor_A           := I;
+               Factor_B           := J;
+               Largest_Palindrome := Product;
+            end if;
+         end if;
 
-         exit A_Loop when Found = true;
       end loop B_Loop;
 
    end loop A_Loop;
 
-   if Found = true then
-      IO.Put_Line( "the largest palindrom made by a product of 2 three-digit numbers is"
-                   & " the product of"
-                   & Integer'Image(Factor_A) & " *" & Integer'Image(Factor_B)
-                   & " ="
-                   & Integer'Image( Largest_Palindrome ) 
-      );
-   else
-      IO.Put_Line( "could not find the largest palindrome." );
-   end if;
+   IO.Put_Line( "the largest palindrom made by a product of 2 three-digit numbers is"
+                & " the product of"
+                & Integer'Image( Factor_A ) & " *" & Integer'Image( Factor_B )
+                & " ="
+                & Integer'Image( Largest_Palindrome ) 
+   );
 
 end Main;
